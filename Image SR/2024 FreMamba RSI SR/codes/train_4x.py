@@ -19,7 +19,7 @@ from tensorboardX import SummaryWriter
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch Super Res Example')
-parser.add_argument('--upscale_factor', type=int, default=4, help="super resolution upscale factor")
+parser.add_argument('--upscale_factor', type=int, default=6, help="super resolution upscale factor")
 parser.add_argument('--batchSize', type=int, default=4, help='training batch size')
 parser.add_argument('--nEpochs', type=int, default=500, help='number of epochs to train for')
 parser.add_argument('--snapshots', type=int, default=1, help='Snapshots')
@@ -30,8 +30,8 @@ parser.add_argument('--threads', type=int, default=0, help='number of threads fo
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 parser.add_argument('--gpus', default=1, type=int, help='number of gpu')
 
-parser.add_argument('--data_dir', type=str, default='D:/SISR/Dataset/train')
-parser.add_argument('--val_dir', type=str, default='./AID-tiny/')  # val while training
+parser.add_argument('--data_dir', type=str, default='./dataload/data')
+parser.add_argument('--val_dir', type=str, default='./dataload/tiny')  # val while training
 
 parser.add_argument('--data_augmentation', type=bool, default=True)
 parser.add_argument('--model_type', type=str, default='fmsr')

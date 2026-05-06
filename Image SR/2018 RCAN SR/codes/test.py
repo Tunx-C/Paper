@@ -1,3 +1,5 @@
+from __future__ import annotations
+from typing import Tuple, Optional, Union, List
 # Copyright 2022 Dakewe Biotech Corporation. All Rights Reserved.
 # Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,6 +14,7 @@
 # limitations under the License.
 # ==============================================================================
 import time
+import os  # [MOD] 新增
 
 import torch
 from torch import nn
@@ -22,7 +25,7 @@ import model
 from dataset import TestImageDataset, CUDAPrefetcher
 from utils import build_iqa_model, load_state_dict, make_directory, AverageMeter, ProgressMeter
 
-
+from torchvision.utils import save_image  # [MOD] 新增
 def load_dataset(test_gt_images_dir: str, test_lr_images_dir: str, device: torch.device) -> CUDAPrefetcher:
     test_datasets = TestImageDataset(test_gt_images_dir, test_lr_images_dir)
     test_dataloader = DataLoader(test_datasets,
@@ -82,6 +85,15 @@ def test(
         # inference
         with torch.no_grad():
             sr = sr_model(lr)
+
+        # =========================
+        # [MOD] 保存 SR 图像
+        # =========================
+        sr_image = sr.clamp(0.0, 1.0).cpu()  # 防止越界
+
+        # 方式1：用序号命名（最稳，不依赖dataset）
+        save_path = os.path.join(config.test_sr_images_dir, f"{batch_index:04d}.png")
+        save_image(sr_image, save_path)
 
         # Calculate the image IQA
         psnr = psnr_model(sr, gt)

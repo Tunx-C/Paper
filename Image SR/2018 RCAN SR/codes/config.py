@@ -1,3 +1,5 @@
+from __future__ import annotations
+from typing import Tuple, Optional, Union, List
 # Copyright 2021 Dakewe Biotech Corporation. All Rights Reserved.
 # Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -32,7 +34,7 @@ model_arch_name = "rcan_x4"
 # Upscale factor
 upscale_factor = 4
 # Current configuration parameter method
-mode = "train"
+mode = "test"
 # Experiment name, easy to save weights and log files
 exp_name = "RCAN_x4-DIV2K"
 
@@ -53,7 +55,7 @@ if mode == "train":
     resume_model_weights_path = f""
 
     # Total num epochs
-    epochs = 1000
+    epochs = 400
 
     # Loss function weight
     loss_weight = [1.0]
@@ -80,4 +82,4 @@ if mode == "test":
     test_sr_images_dir = f"./results/test/{exp_name}"
     test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
 
-    model_weights_path = f"./results/pretrained_models/RCAN_x4-DIV2K-2dfffdd2.pth.tar"
+    model_weights_path = f"./results/RCAN_x4-DIV2K/best.pth.tar"

@@ -26,7 +26,7 @@ parser.add_argument('--threads', type=int, default=0, help='number of threads fo
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 parser.add_argument('--gpus', default=1, type=int, help='number of gpu')
 
-parser.add_argument('--data_dir', type=str, default='D:/SISR/Dataset/test/DIOR1000')
+parser.add_argument('--data_dir', type=str, default='./dataload/DIOR')
 
 parser.add_argument('--model_type', type=str, default='fmsr')
 parser.add_argument('--pretrained_sr', default='saved_models/fmsr_4x.pth', help='sr pretrained base model')
