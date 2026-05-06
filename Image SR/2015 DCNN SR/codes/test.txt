@@ -1,4 +1,0 @@
-#!/bin/bash
-python test.py --weights-file "data/train/srcnn_x3.pth" \
-               --image-file "data/train/butterfly_GT.bmp" \
-               --scale 3
