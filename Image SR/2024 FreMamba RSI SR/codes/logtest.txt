@@ -1,0 +1,3728 @@
+Namespace(data_dir='./dataload/DIOR', gpu_mode=True, gpus=1, model_type='fmsr', pretrained_sr='saved_models/fmsr/fmsr_epoch_196.pth', save_folder='results/', seed=123, testBatchSize=1, threads=0, upscale_factor=4)
+===> Building model  fmsr
+---------- Networks architecture -------------
+DataParallel(
+  (module): FreMamba(
+    (conv_first): Conv2d(3, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (patch_embed): PatchEmbed(
+      (norm): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+    )
+    (patch_unembed): PatchUnEmbed()
+    (pos_drop): Dropout(p=0.0, inplace=False)
+    (layers): ModuleList(
+      (0): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.000)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.003)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.006)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.009)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.011)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.014)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (1): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.017)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.020)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.023)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.026)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.029)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.031)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (2): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.034)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.037)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.040)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.043)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.046)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.049)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (3): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.051)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.054)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.057)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.060)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.063)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.066)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (4): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.069)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.071)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.074)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.077)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.080)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.083)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (5): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.086)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.089)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.091)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.094)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.097)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.100)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+    )
+    (norm): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+    (conv_after_body): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv_before_upsample): Sequential(
+      (0): Conv2d(96, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.01, inplace=True)
+    )
+    (upsample): Upsample(
+      (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): PixelShuffle(upscale_factor=2)
+      (2): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (3): PixelShuffle(upscale_factor=2)
+    )
+    (conv_last): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+)
+Total number of parameters: 11.427087 M
+No pre-trained model!!!!
+===> Loading val datasets
+===> Processing image: ./dataload/DIOR/LR/00001.jpg || Timer: 0.8746 sec.
+save image to: results/22-34-10/00001.png
+===> Processing image: ./dataload/DIOR/LR/00002.jpg || Timer: 0.1493 sec.
+save image to: results/22-34-10/00002.png
+===> Processing image: ./dataload/DIOR/LR/00003.jpg || Timer: 0.1477 sec.
+save image to: results/22-34-10/00003.png
+===> Processing image: ./dataload/DIOR/LR/00004.jpg || Timer: 0.1465 sec.
+save image to: results/22-34-10/00004.png
+===> Processing image: ./dataload/DIOR/LR/00005.jpg || Timer: 0.1502 sec.
+save image to: results/22-34-10/00005.png
+===> Processing image: ./dataload/DIOR/LR/00006.jpg || Timer: 0.1499 sec.
+save image to: results/22-34-10/00006.png
+===> Processing image: ./dataload/DIOR/LR/00007.jpg || Timer: 0.1500 sec.
+save image to: results/22-34-10/00007.png
+===> Processing image: ./dataload/DIOR/LR/00008.jpg || Timer: 0.1486 sec.
+save image to: results/22-34-10/00008.png
+===> Processing image: ./dataload/DIOR/LR/00009.jpg || Timer: 0.1506 sec.
+save image to: results/22-34-10/00009.png
+===> Processing image: ./dataload/DIOR/LR/00010.jpg || Timer: 0.1537 sec.
+save image to: results/22-34-10/00010.png
+===> Processing image: ./dataload/DIOR/LR/00011.jpg || Timer: 0.1500 sec.
+save image to: results/22-34-10/00011.png
+===> Processing image: ./dataload/DIOR/LR/00012.jpg || Timer: 0.1481 sec.
+save image to: results/22-34-10/00012.png
+===> Processing image: ./dataload/DIOR/LR/00013.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00013.png
+===> Processing image: ./dataload/DIOR/LR/00014.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00014.png
+===> Processing image: ./dataload/DIOR/LR/00015.jpg || Timer: 0.1511 sec.
+save image to: results/22-34-10/00015.png
+===> Processing image: ./dataload/DIOR/LR/00016.jpg || Timer: 0.1500 sec.
+save image to: results/22-34-10/00016.png
+===> Processing image: ./dataload/DIOR/LR/00017.jpg || Timer: 0.1619 sec.
+save image to: results/22-34-10/00017.png
+===> Processing image: ./dataload/DIOR/LR/00018.jpg || Timer: 0.1500 sec.
+save image to: results/22-34-10/00018.png
+===> Processing image: ./dataload/DIOR/LR/00019.jpg || Timer: 0.1496 sec.
+save image to: results/22-34-10/00019.png
+===> Processing image: ./dataload/DIOR/LR/00020.jpg || Timer: 0.1476 sec.
+save image to: results/22-34-10/00020.png
+===> Processing image: ./dataload/DIOR/LR/00021.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00021.png
+===> Processing image: ./dataload/DIOR/LR/00022.jpg || Timer: 0.1476 sec.
+save image to: results/22-34-10/00022.png
+===> Processing image: ./dataload/DIOR/LR/00023.jpg || Timer: 0.1481 sec.
+save image to: results/22-34-10/00023.png
+===> Processing image: ./dataload/DIOR/LR/00024.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00024.png
+===> Processing image: ./dataload/DIOR/LR/00025.jpg || Timer: 0.1626 sec.
+save image to: results/22-34-10/00025.png
+===> Processing image: ./dataload/DIOR/LR/00026.jpg || Timer: 0.1496 sec.
+save image to: results/22-34-10/00026.png
+===> Processing image: ./dataload/DIOR/LR/00027.jpg || Timer: 0.1504 sec.
+save image to: results/22-34-10/00027.png
+===> Processing image: ./dataload/DIOR/LR/00028.jpg || Timer: 0.1509 sec.
+save image to: results/22-34-10/00028.png
+===> Processing image: ./dataload/DIOR/LR/00029.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00029.png
+===> Processing image: ./dataload/DIOR/LR/00030.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00030.png
+===> Processing image: ./dataload/DIOR/LR/00031.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00031.png
+===> Processing image: ./dataload/DIOR/LR/00032.jpg || Timer: 0.1503 sec.
+save image to: results/22-34-10/00032.png
+===> Processing image: ./dataload/DIOR/LR/00033.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00033.png
+===> Processing image: ./dataload/DIOR/LR/00034.jpg || Timer: 0.1525 sec.
+save image to: results/22-34-10/00034.png
+===> Processing image: ./dataload/DIOR/LR/00035.jpg || Timer: 0.1489 sec.
+save image to: results/22-34-10/00035.png
+===> Processing image: ./dataload/DIOR/LR/00036.jpg || Timer: 0.1473 sec.
+save image to: results/22-34-10/00036.png
+===> Processing image: ./dataload/DIOR/LR/00037.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00037.png
+===> Processing image: ./dataload/DIOR/LR/00038.jpg || Timer: 0.1490 sec.
+save image to: results/22-34-10/00038.png
+===> Processing image: ./dataload/DIOR/LR/00039.jpg || Timer: 0.1486 sec.
+save image to: results/22-34-10/00039.png
+===> Processing image: ./dataload/DIOR/LR/00040.jpg || Timer: 0.1465 sec.
+save image to: results/22-34-10/00040.png
+===> Processing image: ./dataload/DIOR/LR/00041.jpg || Timer: 0.1469 sec.
+save image to: results/22-34-10/00041.png
+===> Processing image: ./dataload/DIOR/LR/00042.jpg || Timer: 0.1508 sec.
+save image to: results/22-34-10/00042.png
+===> Processing image: ./dataload/DIOR/LR/00043.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00043.png
+===> Processing image: ./dataload/DIOR/LR/00044.jpg || Timer: 0.1479 sec.
+save image to: results/22-34-10/00044.png
+===> Processing image: ./dataload/DIOR/LR/00045.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00045.png
+===> Processing image: ./dataload/DIOR/LR/00046.jpg || Timer: 0.1499 sec.
+save image to: results/22-34-10/00046.png
+===> Processing image: ./dataload/DIOR/LR/00047.jpg || Timer: 0.1484 sec.
+save image to: results/22-34-10/00047.png
+===> Processing image: ./dataload/DIOR/LR/00048.jpg || Timer: 0.1499 sec.
+save image to: results/22-34-10/00048.png
+===> Processing image: ./dataload/DIOR/LR/00049.jpg || Timer: 0.1497 sec.
+save image to: results/22-34-10/00049.png
+===> Processing image: ./dataload/DIOR/LR/00050.jpg || Timer: 0.1499 sec.
+save image to: results/22-34-10/00050.png
+===> Processing image: ./dataload/DIOR/LR/00051.jpg || Timer: 0.1496 sec.
+save image to: results/22-34-10/00051.png
+===> Processing image: ./dataload/DIOR/LR/00052.jpg || Timer: 0.1492 sec.
+save image to: results/22-34-10/00052.png
+===> Processing image: ./dataload/DIOR/LR/00053.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00053.png
+===> Processing image: ./dataload/DIOR/LR/00054.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00054.png
+===> Processing image: ./dataload/DIOR/LR/00055.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00055.png
+===> Processing image: ./dataload/DIOR/LR/00056.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00056.png
+===> Processing image: ./dataload/DIOR/LR/00057.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00057.png
+===> Processing image: ./dataload/DIOR/LR/00058.jpg || Timer: 0.1484 sec.
+save image to: results/22-34-10/00058.png
+===> Processing image: ./dataload/DIOR/LR/00059.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00059.png
+===> Processing image: ./dataload/DIOR/LR/00060.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00060.png
+===> Processing image: ./dataload/DIOR/LR/00061.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00061.png
+===> Processing image: ./dataload/DIOR/LR/00062.jpg || Timer: 0.1489 sec.
+save image to: results/22-34-10/00062.png
+===> Processing image: ./dataload/DIOR/LR/00063.jpg || Timer: 0.1491 sec.
+save image to: results/22-34-10/00063.png
+===> Processing image: ./dataload/DIOR/LR/00064.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00064.png
+===> Processing image: ./dataload/DIOR/LR/00065.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00065.png
+===> Processing image: ./dataload/DIOR/LR/00066.jpg || Timer: 0.1480 sec.
+save image to: results/22-34-10/00066.png
+===> Processing image: ./dataload/DIOR/LR/00067.jpg || Timer: 0.1485 sec.
+save image to: results/22-34-10/00067.png
+===> Processing image: ./dataload/DIOR/LR/00068.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00068.png
+===> Processing image: ./dataload/DIOR/LR/00069.jpg || Timer: 0.1463 sec.
+save image to: results/22-34-10/00069.png
+===> Processing image: ./dataload/DIOR/LR/00070.jpg || Timer: 0.1476 sec.
+save image to: /root/miniconda3/lib/python3.8/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+/root/miniconda3/lib/python3.8/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+results/22-34-10/00070.png
+===> Processing image: ./dataload/DIOR/LR/00071.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00071.png
+===> Processing image: ./dataload/DIOR/LR/00072.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00072.png
+===> Processing image: ./dataload/DIOR/LR/00073.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00073.png
+===> Processing image: ./dataload/DIOR/LR/00074.jpg || Timer: 0.1489 sec.
+save image to: results/22-34-10/00074.png
+===> Processing image: ./dataload/DIOR/LR/00075.jpg || Timer: 0.1491 sec.
+save image to: results/22-34-10/00075.png
+===> Processing image: ./dataload/DIOR/LR/00076.jpg || Timer: 0.1486 sec.
+save image to: results/22-34-10/00076.png
+===> Processing image: ./dataload/DIOR/LR/00077.jpg || Timer: 0.1473 sec.
+save image to: results/22-34-10/00077.png
+===> Processing image: ./dataload/DIOR/LR/00078.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00078.png
+===> Processing image: ./dataload/DIOR/LR/00079.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00079.png
+===> Processing image: ./dataload/DIOR/LR/00080.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00080.png
+===> Processing image: ./dataload/DIOR/LR/00081.jpg || Timer: 0.1464 sec.
+save image to: results/22-34-10/00081.png
+===> Processing image: ./dataload/DIOR/LR/00082.jpg || Timer: 0.1473 sec.
+save image to: results/22-34-10/00082.png
+===> Processing image: ./dataload/DIOR/LR/00083.jpg || Timer: 0.1496 sec.
+save image to: results/22-34-10/00083.png
+===> Processing image: ./dataload/DIOR/LR/00084.jpg || Timer: 0.1507 sec.
+save image to: results/22-34-10/00084.png
+===> Processing image: ./dataload/DIOR/LR/00085.jpg || Timer: 0.1514 sec.
+save image to: results/22-34-10/00085.png
+===> Processing image: ./dataload/DIOR/LR/00086.jpg || Timer: 0.1491 sec.
+save image to: results/22-34-10/00086.png
+===> Processing image: ./dataload/DIOR/LR/00087.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00087.png
+===> Processing image: ./dataload/DIOR/LR/00088.jpg || Timer: 0.1486 sec.
+save image to: results/22-34-10/00088.png
+===> Processing image: ./dataload/DIOR/LR/00089.jpg || Timer: 0.1481 sec.
+save image to: results/22-34-10/00089.png
+===> Processing image: ./dataload/DIOR/LR/00090.jpg || Timer: 0.1478 sec.
+save image to: results/22-34-10/00090.png
+===> Processing image: ./dataload/DIOR/LR/00091.jpg || Timer: 0.1478 sec.
+save image to: results/22-34-10/00091.png
+===> Processing image: ./dataload/DIOR/LR/00092.jpg || Timer: 0.1470 sec.
+save image to: results/22-34-10/00092.png
+===> Processing image: ./dataload/DIOR/LR/00093.jpg || Timer: 0.1470 sec.
+save image to: results/22-34-10/00093.png
+===> Processing image: ./dataload/DIOR/LR/00094.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00094.png
+===> Processing image: ./dataload/DIOR/LR/00095.jpg || Timer: 0.1481 sec.
+save image to: results/22-34-10/00095.png
+===> Processing image: ./dataload/DIOR/LR/00096.jpg || Timer: 0.1466 sec.
+save image to: results/22-34-10/00096.png
+===> Processing image: ./dataload/DIOR/LR/00097.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00097.png
+===> Processing image: ./dataload/DIOR/LR/00098.jpg || Timer: 0.1492 sec.
+save image to: results/22-34-10/00098.png
+===> Processing image: ./dataload/DIOR/LR/00099.jpg || Timer: 0.1485 sec.
+save image to: results/22-34-10/00099.png
+===> Processing image: ./dataload/DIOR/LR/00100.jpg || Timer: 0.1490 sec.
+save image to: results/22-34-10/00100.png
+===> Processing image: ./dataload/DIOR/LR/00101.jpg || Timer: 0.1484 sec.
+save image to: results/22-34-10/00101.png
+===> Processing image: ./dataload/DIOR/LR/00102.jpg || Timer: 0.1482 sec.
+save image to: results/22-34-10/00102.png
+===> Processing image: ./dataload/DIOR/LR/00103.jpg || Timer: 0.1480 sec.
+save image to: results/22-34-10/00103.png
+===> Processing image: ./dataload/DIOR/LR/00104.jpg || Timer: 0.1493 sec.
+save image to: results/22-34-10/00104.png
+===> Processing image: ./dataload/DIOR/LR/00105.jpg || Timer: 0.1478 sec.
+save image to: results/22-34-10/00105.png
+===> Processing image: ./dataload/DIOR/LR/00106.jpg || Timer: 0.1478 sec.
+save image to: results/22-34-10/00106.png
+===> Processing image: ./dataload/DIOR/LR/00107.jpg || Timer: 0.1475 sec.
+save image to: results/22-34-10/00107.png
+===> Processing image: ./dataload/DIOR/LR/00108.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00108.png
+===> Processing image: ./dataload/DIOR/LR/00109.jpg || Timer: 0.1473 sec.
+save image to: results/22-34-10/00109.png
+===> Processing image: ./dataload/DIOR/LR/00110.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00110.png
+===> Processing image: ./dataload/DIOR/LR/00111.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00111.png
+===> Processing image: ./dataload/DIOR/LR/00112.jpg || Timer: 0.1472 sec.
+save image to: results/22-34-10/00112.png
+===> Processing image: ./dataload/DIOR/LR/00113.jpg || Timer: 0.1469 sec.
+save image to: results/22-34-10/00113.png
+===> Processing image: ./dataload/DIOR/LR/00114.jpg || Timer: 0.1467 sec.
+save image to: results/22-34-10/00114.png
+===> Processing image: ./dataload/DIOR/LR/00115.jpg || Timer: 0.1471 sec.
+save image to: results/22-34-10/00115.png
+===> Processing image: ./dataload/DIOR/LR/00116.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00116.png
+===> Processing image: ./dataload/DIOR/LR/00117.jpg || Timer: 0.1474 sec.
+save image to: results/22-34-10/00117.png
+===> Processing image: ./dataload/DIOR/LR/00118.jpg || Timer: 0.1495 sec.
+save image to: results/22-34-10/00118.png
+===> Processing image: ./dataload/DIOR/LR/00119.jpg || Timer: 0.1488 sec.
+save image to: results/22-34-10/00119.png
+===> Processing image: ./dataload/DIOR/LR/00120.jpg || Timer: 0.1495 sec.
+save image to: results/22-34-10/00120.png
+===> Processing image: ./dataload/DIOR/LR/00121.jpg || Timer: 0.1487 sec.
+save image to: results/22-34-10/00121.png
+Namespace(data_dir='./dataload/tiny', gpu_mode=True, gpus=1, model_type='fmsr', pretrained_sr='saved_models/fmsr/fmsr_epoch_196.pth', save_folder='results/', seed=123, testBatchSize=1, threads=0, upscale_factor=4)
+===> Building model  fmsr
+---------- Networks architecture -------------
+DataParallel(
+  (module): FreMamba(
+    (conv_first): Conv2d(3, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (patch_embed): PatchEmbed(
+      (norm): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+    )
+    (patch_unembed): PatchUnEmbed()
+    (pos_drop): Dropout(p=0.0, inplace=False)
+    (layers): ModuleList(
+      (0): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.000)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.003)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.006)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.009)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.011)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.014)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (1): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.017)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.020)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.023)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.026)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.029)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.031)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (2): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.034)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.037)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.040)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.043)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.046)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.049)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (3): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.051)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.054)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.057)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.060)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.063)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.066)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (4): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.069)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.071)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.074)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.077)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.080)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.083)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+      (5): ResidualGroup(
+        (residual_group): BasicLayer(
+          dim=96, input_resolution=(64, 64), depth=6
+          (blocks): ModuleList(
+            (0): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.086)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (1): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.089)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (2): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.091)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (3): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.094)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (4): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.097)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+            (5): VSSBlock(
+              (ln_1): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+              (self_attention): SS2D(
+                (in_proj): Linear(in_features=96, out_features=384, bias=False)
+                (conv2d): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192)
+                (act): SiLU()
+                (out_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+                (out_proj): Linear(in_features=192, out_features=96, bias=False)
+              )
+              (fft_branch0): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (drop_path): DropPath(drop_prob=0.100)
+              (hybridgate): HybridGate(
+                (mlp): Mlp(
+                  (fc1): Linear(in_features=96, out_features=192, bias=True)
+                  (act): GELU(approximate='none')
+                  (fc2): Linear(in_features=192, out_features=96, bias=True)
+                  (drop): Dropout(p=0.0, inplace=False)
+                )
+                (ca): CAB(
+                  (cab): Sequential(
+                    (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (1): GELU(approximate='none')
+                    (2): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+                    (3): ChannelAttention(
+                      (attention): Sequential(
+                        (0): AdaptiveAvgPool2d(output_size=1)
+                        (1): Conv2d(96, 3, kernel_size=(1, 1), stride=(1, 1))
+                        (2): ReLU(inplace=True)
+                        (3): Conv2d(3, 96, kernel_size=(1, 1), stride=(1, 1))
+                        (4): Sigmoid()
+                      )
+                    )
+                  )
+                )
+                (expand): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              )
+              (fft_branch): frequency_selection(
+                (act_fft): GELU(approximate='none')
+              )
+              (ln_2): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+            )
+          )
+        )
+        (conv): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (patch_embed): PatchEmbed()
+        (patch_unembed): PatchUnEmbed()
+      )
+    )
+    (norm): LayerNorm((96,), eps=1e-05, elementwise_affine=True)
+    (conv_after_body): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv_before_upsample): Sequential(
+      (0): Conv2d(96, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.01, inplace=True)
+    )
+    (upsample): Upsample(
+      (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): PixelShuffle(upscale_factor=2)
+      (2): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (3): PixelShuffle(upscale_factor=2)
+    )
+    (conv_last): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+)
+Total number of parameters: 11.427087 M
+No pre-trained model!!!!
+===> Loading val datasets
+===> Processing image: ./dataload/tiny/LR/center_1.jpg || Timer: 0.7224 sec.
+save image to: results/22-37-33/center_1.png
+===> Processing image: ./dataload/tiny/LR/center_10.jpg || Timer: 0.1180 sec.
+save image to: results/22-37-33/center_10.png
+===> Processing image: ./dataload/tiny/LR/center_100.jpg || Timer: 0.1115 sec.
+save image to: results/22-37-33/center_100.png
+===> Processing image: ./dataload/tiny/LR/center_101.jpg || Timer: 0.1087 sec.
+save image to: results/22-37-33/center_101.png
+===> Processing image: ./dataload/tiny/LR/center_102.jpg || Timer: 0.1153 sec.
+save image to: results/22-37-33/center_102.png
+===> Processing image: ./dataload/tiny/LR/center_103.jpg || Timer: 0.1090 sec.
+save image to: results/22-37-33/center_103.png
+===> Processing image: ./dataload/tiny/LR/center_104.jpg || Timer: 0.1121 sec.
+save image to: results/22-37-33/center_104.png
+===> Processing image: ./dataload/tiny/LR/center_105.jpg || Timer: 0.1026 sec.
+save image to: results/22-37-33/center_105.png
+===> Processing image: ./dataload/tiny/LR/center_106.jpg || Timer: 0.1044 sec.
+save image to: results/22-37-33/center_106.png
+===> Processing image: ./dataload/tiny/LR/center_107.jpg || Timer: 0.1228 sec.
+save image to: results/22-37-33/center_107.png
+===> Processing image: ./dataload/tiny/LR/center_108.jpg || Timer: 0.1535 sec.
+save image to: results/22-37-33/center_108.png
+===> Processing image: ./dataload/tiny/LR/center_109.jpg || Timer: 0.1045 sec.
+save image to: results/22-37-33/center_109.png
+===> Processing image: ./dataload/tiny/LR/center_11.jpg || Timer: 0.1145 sec.
+save image to: results/22-37-33/center_11.png
+===> Processing image: ./dataload/tiny/LR/center_110.jpg || Timer: 0.1102 sec.
+save image to: results/22-37-33/center_110.png
+===> Processing image: ./dataload/tiny/LR/center_111.jpg || Timer: 0.1084 sec.
+save image to: results/22-37-33/center_111.png
+===> Processing image: ./dataload/tiny/LR/center_12.jpg || Timer: 0.1127 sec.
+save image to: results/22-37-33/center_12.png
+===> Processing image: ./dataload/tiny/LR/center_2.jpg || Timer: 0.1183 sec.
+save image to: results/22-37-33/center_2.png
+===> Processing image: ./dataload/tiny/LR/center_3.jpg || Timer: 0.1178 sec.
+save image to: results/22-37-33/center_3.png
+===> Processing image: ./dataload/tiny/LR/industrial_121.jpg || Timer: 0.0992 sec.
+save image to: results/22-37-33/industrial_121.png
+===> Processing image: ./dataload/tiny/LR/industrial_122.jpg || Timer: 0.0973 sec.
+save image to: results/22-37-33/industrial_122.png
+===> Processing image: ./dataload/tiny/LR/industrial_123.jpg || Timer: 0.0951 sec.
+save image to: results/22-37-33/industrial_123.png
+===> Processing image: ./dataload/tiny/LR/industrial_124.jpg || Timer: 0.0916 sec.
+save image to: results/22-37-33/industrial_124.png
+===> Processing image: ./dataload/tiny/LR/industrial_125.jpg || Timer: 0.0953 sec.
+save image to: results/22-37-33/industrial_125.png
+===> Processing image: ./dataload/tiny/LR/industrial_126.jpg || Timer: 0.0891 sec.
+save image to: results/22-37-33/industrial_126.png
+===> Processing image: ./dataload/tiny/LR/industrial_127.jpg || Timer: 0.0962 sec.
+save image to: results/22-37-33/industrial_127.png
+===> Processing image: ./dataload/tiny/LR/industrial_128.jpg || Timer: 0.0937 sec.
+save image to: results/22-37-33/industrial_128.png
+===> Processing image: ./dataload/tiny/LR/industrial_129.jpg || Timer: 0.0990 sec.
+save image to: results/22-37-33/industrial_129.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_1.jpg || Timer: 0.0990 sec.
+save image to: results/22-37-33/mediumresidential_1.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_10.jpg || Timer: 0.0977 sec.
+save image to: results/22-37-33/mediumresidential_10.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_100.jpg || Timer: 0.0968 sec.
+save image to: results/22-37-33/mediumresidential_100.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_101.jpg || Timer: 0.0982 sec.
+save image to: results/22-37-33/mediumresidential_101.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_102.jpg || Timer: 0.0942 sec.
+save image to: results/22-37-33/mediumresidential_102.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_103.jpg || Timer: 0.0933 sec.
+save image to: results/22-37-33/mediumresidential_103.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_104.jpg || Timer: 0.0979 sec.
+save image to: results/22-37-33/mediumresidential_104.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_105.jpg || Timer: 0.0932 sec.
+save image to: results/22-37-33/mediumresidential_105.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_106.jpg || Timer: 0.1022 sec.
+save image to: results/22-37-33/mediumresidential_106.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_107.jpg || Timer: 0.0960 sec.
+save image to: results/22-37-33/mediumresidential_107.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_108.jpg || Timer: 0.1023 sec.
+save image to: results/22-37-33/mediumresidential_108.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_109.jpg || Timer: 0.0947 sec.
+save image to: results/22-37-33/mediumresidential_109.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_11.jpg || Timer: 0.0970 sec.
+save image to: results/22-37-33/mediumresidential_11.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_110.jpg || Timer: 0.0982 sec.
+save image to: results/22-37-33/mediumresidential_110.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_111.jpg || Timer: 0.0984 sec.
+save image to: results/22-37-33/mediumresidential_111.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_112.jpg || Timer: 0.0960 sec.
+save image to: results/22-37-33/mediumresidential_112.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_113.jpg || Timer: 0.1043 sec.
+save image to: results/22-37-33/mediumresidential_113.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_114.jpg || Timer: 0.1068 sec.
+save image to: results/22-37-33/mediumresidential_114.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_115.jpg || Timer: 0.1483 sec.
+save image to: results/22-37-33/mediumresidential_115.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_116.jpg || Timer: 0.1077 sec.
+save image to: results/22-37-33/mediumresidential_116.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_117.jpg || Timer: 0.1162 sec.
+save image to: results/22-37-33/mediumresidential_117.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_118.jpg || Timer: 0.1427 sec.
+save image to: results/22-37-33/mediumresidential_118.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_119.jpg || Timer: 0.0965 sec.
+save image to: results/22-37-33/mediumresidential_119.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_12.jpg || Timer: 0.1131 sec.
+save image to: results/22-37-33/mediumresidential_12.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_120.jpg || Timer: 0.1089 sec.
+save image to: results/22-37-33/mediumresidential_120.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_121.jpg || Timer: 0.0945 sec.
+save image to: results/22-37-33/mediumresidential_121.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_122.jpg || Timer: 0.0936 sec.
+save image to: results/22-37-33/mediumresidential_122.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_123.jpg || Timer: 0.0998 sec.
+save image to: results/22-37-33/mediumresidential_123.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_124.jpg || Timer: 0.1025 sec.
+save image to: results/22-37-33/mediumresidential_124.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_125.jpg || Timer: 0.0960 sec.
+save image to: results/22-37-33/mediumresidential_125.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_126.jpg || Timer: 0.0945 sec.
+save image to: results/22-37-33/mediumresidential_126.png
+/root/miniconda3/lib/python3.8/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+/root/miniconda3/lib/python3.8/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+===> Processing image: ./dataload/tiny/LR/mediumresidential_127.jpg || Timer: 0.0913 sec.
+save image to: results/22-37-33/mediumresidential_127.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_128.jpg || Timer: 0.0951 sec.
+save image to: results/22-37-33/mediumresidential_128.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_129.jpg || Timer: 0.0913 sec.
+save image to: results/22-37-33/mediumresidential_129.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_2.jpg || Timer: 0.0894 sec.
+save image to: results/22-37-33/mediumresidential_2.png
+===> Processing image: ./dataload/tiny/LR/mediumresidential_3.jpg || Timer: 0.0945 sec.
+save image to: results/22-37-33/mediumresidential_3.png
+===> Processing image: ./dataload/tiny/LR/port_111.jpg || Timer: 0.0986 sec.
+save image to: results/22-37-33/port_111.png
+===> Processing image: ./dataload/tiny/LR/port_120.jpg || Timer: 0.1001 sec.
+save image to: results/22-37-33/port_120.png
+===> Processing image: ./dataload/tiny/LR/resort_120.jpg || Timer: 0.1029 sec.
+save image to: results/22-37-33/resort_120.png
+===> Processing image: ./dataload/tiny/LR/resort_121.jpg || Timer: 0.0997 sec.
+save image to: results/22-37-33/resort_121.png
+===> Processing image: ./dataload/tiny/LR/resort_122.jpg || Timer: 0.0980 sec.
+save image to: results/22-37-33/resort_122.png
+===> Processing image: ./dataload/tiny/LR/resort_123.jpg || Timer: 0.0955 sec.
+save image to: results/22-37-33/resort_123.png
+===> Processing image: ./dataload/tiny/LR/resort_124.jpg || Timer: 0.0992 sec.
+save image to: results/22-37-33/resort_124.png
+===> Processing image: ./dataload/tiny/LR/resort_125.jpg || Timer: 0.0959 sec.
+save image to: results/22-37-33/resort_125.png
+===> Processing image: ./dataload/tiny/LR/resort_126.jpg || Timer: 0.1009 sec.
+save image to: results/22-37-33/resort_126.png
+===> Processing image: ./dataload/tiny/LR/resort_127.jpg || Timer: 0.0964 sec.
+save image to: results/22-37-33/resort_127.png
+===> Processing image: ./dataload/tiny/LR/resort_128.jpg || Timer: 0.0988 sec.
+save image to: results/22-37-33/resort_128.png
+===> Processing image: ./dataload/tiny/LR/resort_129.jpg || Timer: 0.0947 sec.
+save image to: results/22-37-33/resort_129.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_107.jpg || Timer: 0.0958 sec.
+save image to: results/22-37-33/sparseresidential_107.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_108.jpg || Timer: 0.0980 sec.
+save image to: results/22-37-33/sparseresidential_108.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_109.jpg || Timer: 0.0813 sec.
+save image to: results/22-37-33/sparseresidential_109.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_110.jpg || Timer: 0.0929 sec.
+save image to: results/22-37-33/sparseresidential_110.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_111.jpg || Timer: 0.0921 sec.
+save image to: results/22-37-33/sparseresidential_111.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_120.jpg || Timer: 0.0961 sec.
+save image to: results/22-37-33/sparseresidential_120.png
+===> Processing image: ./dataload/tiny/LR/sparseresidential_129.jpg || Timer: 0.0996 sec.
+save image to: results/22-37-33/sparseresidential_129.png
+===> Processing image: ./dataload/tiny/LR/square_102.jpg || Timer: 0.0987 sec.
+save image to: results/22-37-33/square_102.png
+===> Processing image: ./dataload/tiny/LR/square_111.jpg || Timer: 0.0954 sec.
+save image to: results/22-37-33/square_111.png
+===> Processing image: ./dataload/tiny/LR/square_120.jpg || Timer: 0.1001 sec.
+save image to: results/22-37-33/square_120.png
+===> Processing image: ./dataload/tiny/LR/square_129.jpg || Timer: 0.0947 sec.
+save image to: results/22-37-33/square_129.png
+===> Processing image: ./dataload/tiny/LR/stadium_102.jpg || Timer: 0.1075 sec.
+save image to: results/22-37-33/stadium_102.png
+===> Processing image: ./dataload/tiny/LR/stadium_111.jpg || Timer: 0.1175 sec.
+save image to: results/22-37-33/stadium_111.png
+===> Processing image: ./dataload/tiny/LR/stadium_120.jpg || Timer: 0.1103 sec.
+save image to: results/22-37-33/stadium_120.png
+===> Processing image: ./dataload/tiny/LR/stadium_129.jpg || Timer: 0.1004 sec.
+save image to: results/22-37-33/stadium_129.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_102.jpg || Timer: 0.1160 sec.
+save image to: results/22-37-33/storagetanks_102.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_103.jpg || Timer: 0.1145 sec.
+save image to: results/22-37-33/storagetanks_103.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_104.jpg || Timer: 0.1130 sec.
+save image to: results/22-37-33/storagetanks_104.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_105.jpg || Timer: 0.1103 sec.
+save image to: results/22-37-33/storagetanks_105.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_106.jpg || Timer: 0.1164 sec.
+save image to: results/22-37-33/storagetanks_106.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_107.jpg || Timer: 0.1151 sec.
+save image to: results/22-37-33/storagetanks_107.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_108.jpg || Timer: 0.1152 sec.
+save image to: results/22-37-33/storagetanks_108.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_109.jpg || Timer: 0.1478 sec.
+save image to: results/22-37-33/storagetanks_109.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_110.jpg || Timer: 0.1454 sec.
+save image to: results/22-37-33/storagetanks_110.png
+===> Processing image: ./dataload/tiny/LR/storagetanks_111.jpg || Timer: 0.1349 sec.
+save image to: results/22-37-33/storagetanks_111.png
